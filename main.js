@@ -1,4 +1,11 @@
+
+ var randomWords = require('random-words');
+    
+ console.log(randomWords());
+
 window.onload = function () {
+    
+   
     
     var alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h',
     'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
@@ -182,16 +189,26 @@ window.onload = function () {
     
     // Play
     play = function () {
-        categories = [
-            ["everton", "liverpool", "swansea", "chelsea", "hull", "manchester-city", "newcastle-united"],
-            ["alien", "dirty-harry", "gladiator", "finding-nemo", "jaws"],
-            ["manchester", "milan", "madrid", "amsterdam", "prague"]
-        ];
+
+        // justin addition 
+        let categories=[]
+        for (var i=0; i<100; i++) {
+             categories.push(randomWords())
+        }
+
+
+        // categories = [
+        //     ["everton", "liverpool", "swansea", "chelsea", "hull", "manchester-city", "newcastle-united"],
+        //     ["alien", "dirty-harry", "gladiator", "finding-nemo", "jaws"],
+        //     ["manchester", "milan", "madrid", "amsterdam", "prague"]
+        // ];
         
         chosenCategory = categories[Math.floor(Math.random() * categories.length)];
         word = chosenCategory[Math.floor(Math.random() * chosenCategory.length)];
+        word= randomWords();
         word = word.replace(/\s/g, "-");
-        console.log(word);
+        
+      
         buttons();
         
         geusses = [ ];
