@@ -17,6 +17,7 @@ npm run-script build
 2. Restart game upon finish
 3. I welcome whoever who wants to beautify or animate it -- Me not doing
 4. Give answer after loss
+5. Sometimes u win is not working 
 
 
 
