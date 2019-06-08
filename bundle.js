@@ -1,257 +1,255 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 
- var randomWords = require('random-words');
-    
- console.log(randomWords());
+// var randomWord = require('random-words');
+var randomWord = require('random-words');
+// var wd = require('word-definition');
 
-window.onload = function () {
+
+
+window.onload= function(){
+
     
-   
-    
-    var alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h',
-    'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
-    't', 'u', 'v', 'w', 'x', 'y', 'z'];
-    
-    var categories;         // Array of topics
-    var chosenCategory;     // Selected catagory
-    var getHint ;          // Word getHint
-    var word ;              // Selected word
-    var guess ;             // Geuss
-    var geusses = [ ];      // Stored geusses
-    var lives ;             // Lives
-    var counter ;           // Count correct geusses
-    var space;              // Number of spaces in word '-'
-    
-    // Get elements
-    var showLives = document.getElementById("mylives");
-    var showCatagory = document.getElementById("scatagory");
-    var getHint = document.getElementById("hint");
-    var showClue = document.getElementById("clue");
+    // wd.getDef("whatever","en",null,function(definition){
+    //     console.log(definition);
+    // })
     
     
-    
-    // create alphabet ul
-    var buttons = function () {
-        myButtons = document.getElementById('buttons');
-        letters = document.createElement('ul');
+    let stringToList= function(str){
         
-        for (var i = 0; i < alphabet.length; i++) {
-            letters.id = 'alphabet';
-            list = document.createElement('li');
-            list.id = 'letter';
-            list.innerHTML = alphabet[i];
-            check();
-            myButtons.appendChild(letters);
-            letters.appendChild(list);
-        }
+        let list= str.split("")
+        return list
     }
     
     
-    // Select Catagory
-    var selectCat = function () {
-        if (chosenCategory === categories[0]) {
-            catagoryName.innerHTML = "The Chosen Category Is Premier League Football Teams";
-        } else if (chosenCategory === categories[1]) {
-            catagoryName.innerHTML = "The Chosen Category Is Films";
-        } else if (chosenCategory === categories[2]) {
-            catagoryName.innerHTML = "The Chosen Category Is Cities";
-        }
+    let player = {
+        name:'justin',
+        lives: 10,
+        guesses:[],
     }
     
-    // Create geusses ul
-    result = function () {
-        wordHolder = document.getElementById('hold');
-        correct = document.createElement('ul');
-        
-        for (var i = 0; i < word.length; i++) {
-            correct.setAttribute('id', 'my-word');
-            guess = document.createElement('li');
-            guess.setAttribute('class', 'guess');
-            if (word[i] === "-") {
-                guess.innerHTML = "-";
-                space = 1;
-            } else {
-                guess.innerHTML = "_";
+    let game = {
+        alphabets: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h',
+        'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
+        't', 'u', 'v', 'w', 'x', 'y', 'z'],
+        word: {
+            name:randomWord(),
+            category: 'random',
+            get wordLetters(){
+                return stringToList(this.name)
             }
             
-            geusses.push(guess);
-            wordHolder.appendChild(correct);
-            correct.appendChild(guess);
+            
         }
     }
     
-    // Show lives
-    comments = function () {
-        showLives.innerHTML = "You have " + lives + " lives";
-        if (lives < 1) {
-            showLives.innerHTML = "Game Over";
+    game.correctList=[]
+    for (var i=0; i<game.word.name.length; i++) {
+        game.correctList.push( false);
+    }
+    //decided not to use a getter
+    
+    
+    
+    //set up drawing
+    let drawing = document.getElementById("drawing");
+    let context = drawing.getContext('2d');
+    context.strokeStyle = "blue";
+    context.lineWidth = 1;
+    context.beginPath();
+    
+    
+    let checkLetter= function(letter){
+        
+        
+        
+        if(game.word.wordLetters.includes(letter)){
+            //if correct
+            
+            console.log(`Correct! ${letter} is inside ${game.word.name}`)
+            
+            //collect indexes in list
+            let indexList=[]
+            game.word.wordLetters.filter(
+                function(currentValue,index){
+                    if(currentValue==letter){
+                        indexList.push(index)
+                    }
+                }
+                )
+                
+                let blanks = document.getElementById('blanks');
+                //insert 
+                indexList.forEach(function(index){
+                    game.correctList[index]=true; 
+                    blanks.childNodes[index].innerHTML= letter;
+                })
+                
+                if(game.correctList.every(function(currentValue){
+                    return currentValue==true;
+                })){
+                    alert("You Win!")
+                }
+                
+                
+            }else{
+                // if wrong
+                
+                console.log(`Wrong! ${letter} is not in ${game.word.name}`);
+                player.lives--
+                console.log(`You have ${player.lives} left`)
+                draw();
+                
+                if(player.lives==0){
+                    alert("Game Over!")
+                }
+            }
+            
         }
-        for (var i = 0; i < geusses.length; i++) {
-            if (counter + space === geusses.length) {
-                showLives.innerHTML = "You Win!";
+        
+        
+        
+        // create alphabet ul
+        let showButtons = function () {
+            let keyboard = document.getElementById('keyboard');
+            let letters = document.createElement('ul');
+            letters.id = 'letters';
+            // console.log(letters);
+            keyboard.appendChild(letters);
+            for (let i = 0; i < game.alphabets.length; i++) {
+                let letter = document.createElement('li');
+                letter.id= 'letter'
+                let buttonLetter= document.createElement('button')
+                buttonLetter.setAttribute('id','buttonLetter');
+                buttonLetter.innerHTML = game.alphabets[i];
+                buttonLetter.addEventListener('click',function(id){
+                    console.log(`you just clicked ${this.innerHTML}`)
+                    checkLetter(this.innerHTML)
+                    this.parentNode.removeChild(this);
+                })
+                letters.appendChild(letter);
+                letter.appendChild(buttonLetter);
             }
         }
-    }
-    
-    // Animate man
-    var animate = function () {
-        var drawMe = lives ;
-        drawArray[drawMe]();
-    }
-    
-    
-    // Hangman
-    canvas =  function(){
         
-        myStickman = document.getElementById("stickman");
-        context = myStickman.getContext('2d');
-        context.beginPath();
-        context.strokeStyle = "#fff";
-        context.lineWidth = 2;
-    };
-    
-    head = function(){
-        myStickman = document.getElementById("stickman");
-        context = myStickman.getContext('2d');
-        context.beginPath();
-        context.arc(60, 25, 10, 0, Math.PI*2, true);
-        context.stroke();
-    }
-    
-    draw = function($pathFromx, $pathFromy, $pathTox, $pathToy) {
-        
-        context.moveTo($pathFromx, $pathFromy);
-        context.lineTo($pathTox, $pathToy);
-        context.stroke(); 
-    }
-    
-    frame1 = function() {
-        draw (0, 150, 150, 150);
-    };
-    
-    frame2 = function() {
-        draw (10, 0, 10, 600);
-    };
-    
-    frame3 = function() {
-        draw (0, 5, 70, 5);
-    };
-    
-    frame4 = function() {
-        draw (60, 5, 60, 15);
-    };
-    
-    torso = function() {
-        draw (60, 36, 60, 70);
-    };
-    
-    rightArm = function() {
-        draw (60, 46, 100, 50);
-    };
-    
-    leftArm = function() {
-        draw (60, 46, 20, 50);
-    };
-    
-    rightLeg = function() {
-        draw (60, 70, 100, 100);
-    };
-    
-    leftLeg = function() {
-        draw (60, 70, 20, 100);
-    };
-    
-    drawArray = [rightLeg, leftLeg, rightArm, leftArm,  torso,  head, frame4, frame3, frame2, frame1]; 
-    
-    
-    // OnClick Function
-    check = function () {
-        list.onclick = function () {
-            var geuss = (this.innerHTML);
-            this.setAttribute("class", "active");
-            this.onclick = null;
-            for (var i = 0; i < word.length; i++) {
-                if (word[i] === geuss) {
-                    geusses[i].innerHTML = geuss;
-                    counter += 1;
-                } 
+        let showBlanks = function(){
+            let blanksFrame = document.getElementById('blanksFrame');
+            let blanks = document.createElement('ul');
+            blanks.setAttribute('id','blanks')
+            blanksFrame.appendChild(blanks);
+            for (let i=0; i<game.word.wordLetters.length; i++) {
+                let blank = document.createElement('li');
+                blank.setAttribute('id','blank')
+                blank.innerHTML = "__";
+                // blank.style.borderBottom = "1px solid black";
+                blanks.appendChild(blank);
             }
-            var j = (word.indexOf(geuss));
-            if (j === -1) {
-                lives -= 1;
-                comments();
-                animate();
-            } else {
-                comments();
+            // console.log(blanksFrame);
+            
+            // blanks.style.display= "inline"
+            
+            
+        }
+        
+        //show Category by clicking button
+        let showCategory= function(){
+            let category= document.getElementById('category');
+            category.innerHTML = game.word.category;
+        }
+        
+        let showLives= function(){
+            let lives= document.getElementById('lives');
+            lives.innerHTML= `You have ${player.lives} left`;
+        }
+        
+        
+        
+        //draw function
+        let drawLine = function($pathFromx, $pathFromy, $pathTox, $pathToy) {
+            
+            context.moveTo($pathFromx, $pathFromy);
+            context.lineTo($pathTox, $pathToy);
+            context.stroke(); 
+        }
+        
+        let draw =function(){
+            
+            switch(player.lives){
+                case 9:
+                
+                drawLine(5, 130, 30, 130)
+                
+                break;
+                
+                case 8:
+                drawLine(10, 20, 10, 130)
+                
+                
+                break;
+                
+                case 7:
+                drawLine(10, 20, 50, 20) 
+                break; 
+                
+                case 6:
+                drawLine(50,20,50,30)
+                break; 
+                
+                case 5:
+                
+                //drawing head
+                context.beginPath();
+                context.arc(50, 40, 10, 0, Math.PI*2, true);
+                context.stroke();
+                break;
+                
+                case 4:
+                
+                drawLine(50,50,50,90)
+                
+                break;
+                
+                case 3:
+                drawLine(50,90,30,110)
+                break; 
+                
+                case 2:
+                drawLine(50,90,70,110)
+                break;
+                
+                case 1:
+                drawLine(50,60,30,80)
+                break;
+                
+                case 0:
+                
+                drawLine(50,60,70,80)
+                break;
+                
             }
+            
+            
         }
+        
+        
+        
+        //display ui
+        showButtons();
+        showBlanks();
+        showCategory();
+        showLives();
+        
+        // draw();
+        
+        
+        
+        
     }
     
     
-    // Play
-    play = function () {
-
-        // justin addition 
-        let categories=[]
-        for (var i=0; i<100; i++) {
-             categories.push(randomWords())
-        }
-
-
-        // categories = [
-        //     ["everton", "liverpool", "swansea", "chelsea", "hull", "manchester-city", "newcastle-united"],
-        //     ["alien", "dirty-harry", "gladiator", "finding-nemo", "jaws"],
-        //     ["manchester", "milan", "madrid", "amsterdam", "prague"]
-        // ];
-        
-        chosenCategory = categories[Math.floor(Math.random() * categories.length)];
-        word = chosenCategory[Math.floor(Math.random() * chosenCategory.length)];
-        word= randomWords();
-        word = word.replace(/\s/g, "-");
-        
-      
-        buttons();
-        
-        geusses = [ ];
-        lives = 10;
-        counter = 0;
-        space = 0;
-        result();
-        comments();
-        selectCat();
-        canvas();
-    }
+    //testing below
+    // checkAnswer("a")
     
-    play();
     
-    // Hint
-    
-    hint.onclick = function() {
-        
-        hints = [
-            ["Based in Mersyside", "Based in Mersyside", "First Welsh team to reach the Premier Leauge", "Owned by A russian Billionaire", "Once managed by Phil Brown", "2013 FA Cup runners up", "Gazza's first club"],
-            ["Science-Fiction horror film", "1971 American action film", "Historical drama", "Anamated Fish", "Giant great white shark"],
-            ["Northern city in the UK", "Home of AC and Inter", "Spanish capital", "Netherlands capital", "Czech Republic capital"]
-        ];
-        
-        var catagoryIndex = categories.indexOf(chosenCategory);
-        var hintIndex = chosenCategory.indexOf(word);
-        showClue.innerHTML = "Clue: - " +  hints [catagoryIndex][hintIndex];
-    };
-    
-    // Reset
-    
-    document.getElementById('reset').onclick = function() {
-        correct.parentNode.removeChild(correct);
-        letters.parentNode.removeChild(letters);
-        showClue.innerHTML = "";
-        context.clearRect(0, 0, 400, 400);
-        play();
-    }
-}
-
-
-
 },{"random-words":2}],2:[function(require,module,exports){
 var wordList = [
   // Borrowed from xkcd password generator which borrowed it from wherever

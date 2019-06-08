@@ -19,7 +19,9 @@
   "homepage": "https://github.com/tintinthong/hangman#readme",
   "dependencies": {
     "browserify": "^16.2.3",
-    "gulp": "^4.0.2",
-    "random-words": "^1.1.0"
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "random-words": "^1.1.0",
+    "word-definition": "^2.1.6"
   }
 }
