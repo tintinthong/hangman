@@ -1,5 +1,3 @@
-Hangman - by Hacker Collective
-
 # Hangman (Urban-Dictionary)
 
 Simple hangman game built in 4 hours. Uses only front-end interaction with no libraries
