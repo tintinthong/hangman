@@ -22,7 +22,12 @@
     background-color: yellow;
 }
 
-
+#introHeader h1,
+#introHeader p {
+    display: inline;
+    vertical-align: top;
+    font-family: 'Open Sans', sans-serif;
+}
 
 
 

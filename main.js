@@ -1,18 +1,23 @@
 
-// var randomWord = require('random-words');
-var randomWord = require('random-words');
-// var wd = require('word-definition');
+'use strict'
 
+var ud= require('urban-dictionary');
 
-
-window.onload= function(){
-
+//promise object returned by ud directory
+ud.random().then((result) => {
+    // console.log(result.word)
+    // console.log(result.definition)
+    // console.log(result.example)
     
-    // wd.getDef("whatever","en",null,function(definition){
-    //     console.log(definition);
-    // })
+    play(result.word,result.definition)
+  
     
-    
+}).catch((error) => {
+    console.error(error.message)
+})
+
+
+let play =function(result_word,result_definition){
     let stringToList= function(str){
         
         let list= str.split("")
@@ -31,8 +36,8 @@ window.onload= function(){
         'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
         't', 'u', 'v', 'w', 'x', 'y', 'z'],
         word: {
-            name:randomWord(),
-            category: 'random',
+            name:result_word.toLowerCase(),
+            definition:result_definition,
             get wordLetters(){
                 return stringToList(this.name)
             }
@@ -138,7 +143,23 @@ window.onload= function(){
             for (let i=0; i<game.word.wordLetters.length; i++) {
                 let blank = document.createElement('li');
                 blank.setAttribute('id','blank')
-                blank.innerHTML = "__";
+                
+                // if not alphabet then put special character
+                if(!game.alphabets.includes(game.word.wordLetters[i])){
+
+                    if(game.word.wordLetters[i]==" "){
+                        blank.innerHTML = "&nbsp&nbsp&nbsp";
+                    }else{
+                        blank.innerHTML = game.word.wordLetters[i];
+
+                    }
+                    
+                    // `${game.word.wordLetters[i]} `;
+                }else{
+                    blank.innerHTML = "__";
+                }
+                
+                
                 // blank.style.borderBottom = "1px solid black";
                 blanks.appendChild(blank);
             }
@@ -149,10 +170,10 @@ window.onload= function(){
             
         }
         
-        //show Category by clicking button
-        let showCategory= function(){
-            let category= document.getElementById('category');
-            category.innerHTML = game.word.category;
+        //show hint by clicking button
+        let showHint= function(){
+            let hint= document.getElementById('hint');
+            hint.innerHTML = game.word.definition;
         }
         
         let showLives= function(){
@@ -234,7 +255,7 @@ window.onload= function(){
         //display ui
         showButtons();
         showBlanks();
-        showCategory();
+        showHint();
         showLives();
         
         // draw();
@@ -242,10 +263,14 @@ window.onload= function(){
         
         
         
+        
+        
+        //testing below
+        // checkAnswer("a")
+        
+        
+        
+        
     }
-    
-    
-    //testing below
-    // checkAnswer("a")
     
     
