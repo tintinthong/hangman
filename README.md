@@ -17,8 +17,7 @@ npm run-script build
 
 1. Organise data and ui logic so they don't get confused
 2. Restart game upon finish
-3. Add random "dictionary" word and definition to game object
-4. Add animation? If you want.
+3. I welcome whoever who wants to beautify or animate it -- Me not doing
 
 
 
