@@ -11,7 +11,7 @@ ud.random().then((result) => {
     // console.log(result.example)
     
     play(result.word,result.definition)
-    console.log(result.word);
+  
     
 }).catch((error) => {
     console.error(error.message)
@@ -154,7 +154,6 @@ let play =function(result_word,result_definition){
                         blank.innerHTML = game.word.wordLetters[i];
 
                     }
-                    
                     
                     // `${game.word.wordLetters[i]} `;
                 }else{
