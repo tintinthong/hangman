@@ -4,11 +4,11 @@ Simple hangman game built in 4 hours. Uses only front-end interaction with no li
 
 ## Installation
 
-`
+```
 git clone https://github.com/tintinthong/hangman.git
 npm install 
 npm run-script build
-`
+```
 -->Open index.html
 
 ## Things to do
