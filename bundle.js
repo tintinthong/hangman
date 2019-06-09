@@ -101,7 +101,7 @@ let play =function(result_word,result_definition){
                 
                 console.log(`Wrong! ${letter} is not in ${game.word.name}`);
                 player.lives--
-                console.log(`You have ${player.lives} left`)
+                console.log(`You have ${player.lives} lives left`)
                 draw();
                 
                 if(player.lives==0){

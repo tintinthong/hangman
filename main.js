@@ -178,7 +178,7 @@ let play =function(result_word,result_definition){
         
         let showLives= function(){
             let lives= document.getElementById('lives');
-            lives.innerHTML= `You have ${player.lives} left`;
+            lives.innerHTML= `You have ${player.lives} lives left`;
         }
         
         
