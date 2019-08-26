@@ -25,4 +25,4 @@ npm run-script build
 
 See here: https://hangman-urban-dictionary.herokuapp.com/
 
-
+[Gif is here](https://imgur.com/clNorco)
