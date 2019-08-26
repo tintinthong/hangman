@@ -1,39 +1,83 @@
 
+.container{
+    display:flex;
+    justify-content: center;
+    padding-top:0.5%;
+}
+
+#introHeader h1 {
+    font-family: 'Open Sans', sans-serif;
+}
+
 #drawing{
-    max-width: 100%;
-    height: auto;
+    width:30%; 
     border: solid;
 }
 
 
-#letter{
-    display:inline-block;
+
+/* 
+#blanksFrame{
+} */
+
+#blanks{
+   display:flex;
+   padding-left:0px;
+   flex-wrap: nowrap;
+   justify-content: center;
+   list-style-type: none;
 }
 
 #blank{
-    display:inline-block;
-    padding:2px;
-    
-    /* inline block enables adjusting height and width */
-}
-
-
-#buttonLetter:hover { 
-    background-color: yellow;
-}
-
-#introHeader h1,
-#introHeader p {
-    display: inline;
-    vertical-align: top;
-    font-family: 'Open Sans', sans-serif;
+    padding-left:0.5%;
+    padding-right: 0.5%;
 }
 
 #hint {
     font-family: 'Open Sans', sans-serif;
+    padding-left:10%;
+    padding-right:10%;
 }
 
 
+
+#keyboard {
+    display:flex; 
+    justify-content:center;
+    width:80%;
+}
+
+#letters{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content: flex-start;
+    list-style-type: none;
+    align-items:baseline;
+}
+
+#letter{
+    flex-basis: auto;
+}
+
+#buttonLetter{
+    background-color: rgb(68, 128, 218); 
+    color: white;
+    align-items: center;
+    padding: 15px 15px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#buttonLetter:hover { 
+    background-color:rgb(218, 208, 68);
+    transition:0.8s;
+}
+
+
+
+/* 
+Container and item. If you use list, then ul or ol should act as container.
+*/
 
 
 

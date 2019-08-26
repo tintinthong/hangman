@@ -1,5 +1,9 @@
-let array=[1,2,3];
+// play('hakuna matata', 'it means no worries for the rest of your days')
 
-array[1]='hello';
+let aString = 'sleep is good '
 
-console.log(array);
+let word="delorean";
+
+console.log(aString.search(word));
+
+console.log(aString.toLowerCase().includes(word));

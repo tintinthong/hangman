@@ -2,29 +2,42 @@
 
 'use strict'
 
-var ud= require('urban-dictionary');
+const ud= require('urban-dictionary');
 
-//promise object returned by ud directory
-ud.random().then((result) => {
-    // console.log(result.word)
-    // console.log(result.definition)
-    // console.log(result.example)
-    
-    play(result.word,result.definition)
-  
-    
-}).catch((error) => {
-    console.error(error.message)
-})
+function getWord() {  
+    return ud.random().then(function(result){
+        
+        let definitionParsed= result.definition.toLowerCase();
+        let wordListParsed= result.word.toLowerCase().split(' ');
+
+        let truthValue= true;
+        wordListParsed.forEach(function(wordParsed){
+            
+            if(definitionParsed.includes(wordParsed)){
+                truthValue=false;
+            }
+            
+        })
+        if(!truthValue) {
+            console.log('word is in definition. getting a new word')
+            return getWord();
+        }else{
+            // note here that it seems that you are passing unparsed result.word and result.definition
+            console.log(result.word)
+            play(result.word,result.definition )
+        }
+    }).catch((error) => {
+        console.error(error.message)
+    })
+}
+
+
+getWord()
 
 
 let play =function(result_word,result_definition){
-    let stringToList= function(str){
-        
-        let list= str.split("")
-        return list
-    }
     
+    //INITIALISE OBJECTS
     
     let player = {
         name:'justin',
@@ -47,12 +60,11 @@ let play =function(result_word,result_definition){
         }
     }
     
+    // keep track of true and false guessed
     game.correctList=[]
     for (var i=0; i<game.word.name.length; i++) {
         game.correctList.push( false);
     }
-    //decided not to use a getter
-    
     
     
     //set up drawing
@@ -62,16 +74,35 @@ let play =function(result_word,result_definition){
     context.lineWidth = 1;
     context.beginPath();
     
+    //HELPER FUNCTIONS
     
-    let checkLetter= function(letter){
+    //method to change a string into list (accounting for spaces)
+    let stringToList= function(str){
         
+        let list= str.split("")
+        return list
+    }
+    
+    //draw function
+    let drawLine = function($pathFromx, $pathFromy, $pathTox, $pathToy) {
+        
+        context.moveTo($pathFromx, $pathFromy);
+        context.lineTo($pathTox, $pathToy);
+        context.stroke(); 
+    }
+    
+    //MAIN METHODS
+    
+    
+    //check whether guessed letter is correct and enter into blanks
+    let checkLetter= function(letter){
         
         
         if(game.word.wordLetters.includes(letter)){
             //if correct
             
             console.log(`Correct! ${letter} is inside ${game.word.name}`)
-            
+
             //collect indexes in list
             let indexList=[]
             game.word.wordLetters.filter(
@@ -83,7 +114,6 @@ let play =function(result_word,result_definition){
                 )
                 
                 let blanks = document.getElementById('blanks');
-                //insert 
                 indexList.forEach(function(index){
                     game.correctList[index]=true; 
                     blanks.childNodes[index].innerHTML= letter;
@@ -92,33 +122,41 @@ let play =function(result_word,result_definition){
                 if(game.correctList.every(function(currentValue){
                     return currentValue==true;
                 })){
-                    alert("You Win!")
+                    
+                    // if you win, then reload the page
+                    if (confirm("Congratulations you have won. Do you want to play again?")) {
+                        location.reload();
+                    } 
+                    // document.getElementById("demo").innerHTML = txt;
+                    // alert("You Win!")
                 }
+
+                return true;
                 
                 
             }else{
-                // if wrong
                 
+                // if wrong
                 console.log(`Wrong! ${letter} is not in ${game.word.name}`);
                 player.lives--
                 console.log(`You have ${player.lives} lives left`)
+                showLives();
                 draw();
                 
                 if(player.lives==0){
-                    alert("Game Over!")
+                    alert(`Game Over! The correct answer was ${game.word.name}`)
                 }
+
+                return false;
             }
             
         }
         
-        
-        
-        // create alphabet ul
+        // create buttons
         let showButtons = function () {
             let keyboard = document.getElementById('keyboard');
             let letters = document.createElement('ul');
             letters.id = 'letters';
-            // console.log(letters);
             keyboard.appendChild(letters);
             for (let i = 0; i < game.alphabets.length; i++) {
                 let letter = document.createElement('li');
@@ -128,14 +166,23 @@ let play =function(result_word,result_definition){
                 buttonLetter.innerHTML = game.alphabets[i];
                 buttonLetter.addEventListener('click',function(id){
                     console.log(`you just clicked ${this.innerHTML}`)
-                    checkLetter(this.innerHTML)
-                    this.parentNode.removeChild(this);
+                    if(checkLetter(this.innerHTML)){
+                        this.style.backgroundColor="#33cc00"
+                        this.disabled=true
+                    }else{
+                        this.style.backgroundColor="red";
+                        this.disabled=true;
+                    }
+            
+                   
                 })
                 letters.appendChild(letter);
                 letter.appendChild(buttonLetter);
             }
         }
         
+        // display all blanks 
+        // expose spaces and special characters
         let showBlanks = function(){
             let blanksFrame = document.getElementById('blanksFrame');
             let blanks = document.createElement('ul');
@@ -147,51 +194,42 @@ let play =function(result_word,result_definition){
                 
                 // if not alphabet then put special character
                 if(!game.alphabets.includes(game.word.wordLetters[i])){
-
+                    
                     if(game.word.wordLetters[i]==" "){
                         blank.innerHTML = "&nbsp&nbsp&nbsp";
                     }else{
                         blank.innerHTML = game.word.wordLetters[i];
-
+                        
                     }
+                    // make filled blank with space or special character correct
+                    game.correctList[i]=true;
                     
-                    // `${game.word.wordLetters[i]} `;
                 }else{
                     blank.innerHTML = "__";
                 }
                 
                 
-                // blank.style.borderBottom = "1px solid black";
                 blanks.appendChild(blank);
             }
-            // console.log(blanksFrame);
             
-            // blanks.style.display= "inline"
             
             
         }
         
-        //show hint by clicking button
+        //show hint (do not need to click button)
         let showHint= function(){
             let hint= document.getElementById('hint');
             hint.innerHTML = game.word.definition;
         }
         
+        // show lives based on player object
         let showLives= function(){
             let lives= document.getElementById('lives');
-            lives.innerHTML= `You have ${player.lives} left`;
-        }
-        
-        
-        
-        //draw function
-        let drawLine = function($pathFromx, $pathFromy, $pathTox, $pathToy) {
             
-            context.moveTo($pathFromx, $pathFromy);
-            context.lineTo($pathTox, $pathToy);
-            context.stroke(); 
+            lives.innerHTML= `You have ${player.lives} lives left`;
         }
         
+        // add limb to player based on player.lives
         let draw =function(){
             
             switch(player.lives){
@@ -252,27 +290,16 @@ let play =function(result_word,result_definition){
         }
         
         
-        
-        //display ui
+        //RUN MAIN METHODS
         showButtons();
         showBlanks();
         showHint();
         showLives();
         
-        // draw();
-        
-        
-        
-        
-        
-        
-        //testing below
-        // checkAnswer("a")
-        
-        
-        
-        
     }
+    
+    
+
     
     
 },{"urban-dictionary":35}],2:[function(require,module,exports){
