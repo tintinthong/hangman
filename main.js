@@ -1,7 +1,7 @@
 
 'use strict'
 
-const ud= require('urban-dictionary');
+const ud= require('./urban-dictionary');
 
 function getWord() {  
     return ud.random().then(function(result){
@@ -296,7 +296,11 @@ let play =function(result_word,result_definition){
         showLives();
         
     }
+   
     
+module.exports={
+    getWord
+}
     
 
     
