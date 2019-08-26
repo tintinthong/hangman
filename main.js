@@ -22,7 +22,7 @@ function getWord() {
             return getWord();
         }else{
             // note here that it seems that you are passing unparsed result.word and result.definition
-            console.log(result.word)
+            // console.log(result.word)
             play(result.word,result.definition )
         }
     }).catch((error) => {
