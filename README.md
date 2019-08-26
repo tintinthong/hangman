@@ -21,7 +21,9 @@ npm run-script build
 6. If all answers given then change question
 
 
-## Demo  
+## Links
 
-See here: https://hangman-urban-dictionary.herokuapp.com/
+[Demo](https://hangman-urban-dictionary.herokuapp.com/)
+
+[Tutorial](https://tintinthong.github.io/2019/06/09/how-to-build-a-hangman-game-real-quick/)
 
