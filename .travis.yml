@@ -1,3 +1,9 @@
 language: node_js
 node_js:
   - 12
+notifications:
+  slack:
+    rooms:
+	  - tintinthong-dev:hHlKIdDzKuR3VQAqsAkzdYVt#general
+	  - tintinthong-dev:hHlKIdDzKuR3VQAqsAkzdYVt#random
+
