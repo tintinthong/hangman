@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/tintinthong/hangman-urban-dictionary.svg?branch=master)](https://travis-ci.com/tintinthong/hangman-urban-dictionary)
+
 # Hangman (Urban-Dictionary)
 
 Simple hangman game. Uses only front-end interaction with no libraries
