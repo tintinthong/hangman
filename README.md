@@ -11,6 +11,8 @@ npm run-script build
 ```
 -->Open index.html
 
+<!-- "test": "echo \"Error: no test specified\" && exit 1" -->
+
 ## Links
 
 [Demo](https://hangman-urban-dictionary.herokuapp.com/)
