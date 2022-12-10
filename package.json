@@ -18,6 +18,6 @@
   "homepage": "https://github.com/tintinthong/hangman#readme",
   "dependencies": {
     "browserify": "^16.2.3",
-    "express": "^4.17.1"
+    "express": "^4.17.3"
   }
 }
